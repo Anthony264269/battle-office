@@ -13,15 +13,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Entity\Product;
+use App\Form\ProductType;
+use App\Repository\ProductRepository;
 
 class LandingPageController extends AbstractController
 {
     #[Route('/', name: 'landing_page')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
     {
         $order = new Order;
-        
+        $products = $productRepository ->findAll();
         $form = $this->createForm(OrderType::class, $order);
 
         $form->handleRequest($request);
@@ -46,7 +48,8 @@ class LandingPageController extends AbstractController
         }
 
         return $this->render('landing_page/index_new.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'products' => $products,
        
     ]); 
    
@@ -54,6 +57,7 @@ class LandingPageController extends AbstractController
         
     }
 
+ 
     #[Route('/confirmation', name: 'confirmation')]
     public function confirmation(): Response
     {
