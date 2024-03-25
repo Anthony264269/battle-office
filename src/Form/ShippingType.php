@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Country;
 use App\Entity\Shipping;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,8 +30,9 @@ class ShippingType extends AbstractType
             ->add('city', TextType::class, [
                 'required' => false,
             ])
-            ->add('country', TextType::class, [
-                'required' => false,
+            ->add('country', EntityType::class, [
+                'class' => Country::class,
+                'choice_label' => 'name',
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
